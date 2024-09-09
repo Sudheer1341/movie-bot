@@ -1,26 +1,24 @@
 from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
+from telegram.ext import Application, CommandHandler, CallbackContext
 
-# Function to start the bot
+# Function to handle the /start command
 async def start(update: Update, context: CallbackContext):
-    await update.message.reply_text('Hello! I can help you download movies. Just send me the name of the movie.')
-
-# Function to handle messages
-async def handle_message(update: Update, context: CallbackContext):
-    movie_name = update.message.text
-    # Here you would add the logic to find and send the movie link
-    await update.message.reply_text(f"Searching for {movie_name}...")
+    await update.message.reply_text('Welcome! How can I assist you today?')
 
 async def main():
-    # Add your bot's API token
+    # Replace with your actual Telegram bot API token
     TOKEN = 'YOUR_TELEGRAM_BOT_API_TOKEN'
 
+    # Create an Application instance with your bot token
     application = Application.builder().token(TOKEN).build()
 
+    # Add a handler for the /start command
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
+    # Start the bot
     await application.start_polling()
+
+    # Run the bot until you press Ctrl-C or the process receives SIGINT, SIGTERM or SIGABRT
     await application.idle()
 
 if __name__ == '__main__':
